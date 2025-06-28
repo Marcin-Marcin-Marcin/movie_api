@@ -4,21 +4,152 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>myFlix documentation</title>
+    <style>
+    table {
+       width: 100%;
+       margin: 20px;
+       }
+    table, th, td {
+       border: 1px;
+       border-style: solid;
+       border-color: #8b8680;
+       padding: 20px;
+       text-align: left;
+       }
+    </style>
   </head>
   <body>
     <h1>myFlix Project Documentation</h1>
     <p>Documentation of the API myFlix developed as an exercise in the CareerFoundry course Web Development Full Stack.</p>
     <p>The API allows</p>
     <ul>Return a list of ALL movies to the user
-         Return data (description, genre, director, image URL, whether it’s featured or not) about a
-         single movie by title to the user
-         Return data about a genre (description) by name/title (e.g., “Thriller”)
-         Return data about a director (bio, birth year, death year) by name
-         Allow new users to register
-         Allow users to update their user info (username, password, email, date of birth)
-         Allow users to add a movie to their list of favorites
-         Allow existing users to deregister
-         Allow users to remove a movie from their list of favorites
+         <li>Return data (description, genre, director, image URL, whether it’s featured or not) about a
+         single movie by title to the user</li>
+         <li>Return data about a genre (description) by name/title (e.g., “Thriller”)</li>
+         <li>Return data about a director (bio, birth year, death year) by name</li>
+         <li>Allow new users to register</li>
+         <li>Allow users to update their user info (username, password, email, date of birth)</li>
+         <li>Allow users to add a movie to their list of favorites</li>
+         <li>Allow existing users to deregister</li>
+         <li>Allow users to remove a movie from their list of favorites</li>
     </ul>
+
+    <h1>API Documentation</h1>
+    <h3>Endpoint table</h3>
+    <br>
+    <table>
+  <thead>
+    <tr>
+      <th>Business Logic</th>
+      <th>URL</th>
+      <th>Description</th>
+      <th>HTTP Method</th>
+      <th>Query Parameters</th>
+      <th>Request Body Data Format</th>
+      <th>Response Body Data Format</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Create a new user -->
+    <tr>
+      <td>Create a New User</td>
+      <td>/users</td>
+      <td>Creates a new user account</td>
+      <td>POST</td>
+      <td>None</td>
+      <td>JSON with username, password, email, birthday</td>
+      <td>JSON with the new user info</td>
+    </tr>
+
+    <!-- Update user info -->
+    <tr>
+      <td>Update User Info</td>
+      <td>/users/:id</td>
+      <td>Updates a user's profile</td>
+      <td>PUT</td>
+      <td>user id</td>
+      <td>JSON with updated info</td>
+      <td>JSON with updated user info</td>
+    </tr>
+
+    <!-- Add movie to favorites -->
+    <tr>
+      <td>Add Favorite Movie</td>
+      <td>/users/:id/movies/:movieID</td>
+      <td>Adds a movie to the user's favorite list</td>
+      <td>POST</td>
+      <td>user id, movie ID</td>
+      <td>None</td>
+      <td>Message confirming the movie was added</td>
+    </tr>
+
+    <!-- Remove movie from favorites -->
+    <tr>
+      <td>Remove Favorite Movie</td>
+      <td>/users/:id/movies/:movieID</td>
+      <td>Removes a movie from the favorite list</td>
+      <td>DELETE</td>
+      <td>user id, movie ID</td>
+      <td>None</td>
+      <td>Message confirming the movie was removed</td>
+    </tr>
+
+    <!-- Delete user -->
+    <tr>
+      <td>Delete User</td>
+      <td>/users/:id</td>
+      <td>Deletes a user account</td>
+      <td>DELETE</td>
+      <td>user id</td>
+      <td>None</td>
+      <td>Message confirming the user was deleted</td>
+    </tr>
+
+    <!-- Get all movies -->
+    <tr>
+      <td>Get All Movies</td>
+      <td>/movies</td>
+      <td>Returns a list of all movies</td>
+      <td>GET</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Array of movie objects</td>
+    </tr>
+
+    <!-- Get movie by title -->
+    <tr>
+      <td>Get Movie by Title</td>
+      <td>/movies/:title</td>
+      <td>Returns a movie by its title</td>
+      <td>GET</td>
+      <td>movie title</td>
+      <td>None</td>
+      <td>Movie object</td>
+    </tr>
+
+    <!-- Get genre info -->
+    <tr>
+      <td>Get Genre Info</td>
+      <td>/movies/genre/:genreName</td>
+      <td>Returns info about a movie genre</td>
+      <td>GET</td>
+      <td>genre name</td>
+      <td>None</td>
+      <td>Genre object</td>
+    </tr>
+
+    <!-- Get director info -->
+    <tr>
+      <td>Get Director Info</td>
+      <td>/movies/director/:directorName</td>
+      <td>Returns info about a director</td>
+      <td>GET</td>
+      <td>director name</td>
+      <td>None</td>
+      <td>Director object</td>
+    </tr>
+  </tbody>
+</table>
+
   </body>
 </html>
