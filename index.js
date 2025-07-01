@@ -57,11 +57,6 @@ app.get('/movies', (req, res) => {
   res.json(topMovies);
 });
 
-// Get movie by title
-app.get('/movies/:title', (req, res) => {
-  res.send(`Return data for movie titled: ${req.params.title}`);
-});
-
 // Get movie by genre
 app.get('/movies/genre/:genreName', (req, res) => {
   res.send(`Return description for genre: ${req.params.genreName}`);
@@ -70,6 +65,11 @@ app.get('/movies/genre/:genreName', (req, res) => {
 // Get director info
 app.get('/movies/director/:directorName', (req, res) => {
   res.send(`Return info for director: ${req.params.directorName}`);
+});
+
+// Get movie by title
+app.get('/movies/:title', (req, res) => {
+  res.send(`Return data for movie titled: ${req.params.title}`);
 });
 
 // Create new user
