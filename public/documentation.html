@@ -57,50 +57,60 @@
       <td>Creates a new user account</td>
       <td>POST</td>
       <td>None</td>
-      <td>JSON with username, password, email, birthday</td>
-      <td>JSON with the new user info</td>
+      <td>{
+        "Username": "testuser",
+        "Password": "pass123",
+        "Email": "test@example.com",
+        "Birthday": "1990-01-01"
+      }</td>
+      <td>User object including _id and favorite movies array</td>
     </tr>
 
     <!-- Update user info -->
     <tr>
       <td>Update User Info</td>
-      <td>/users/:id</td>
+      <td>/users/:Username</td>
       <td>Updates a user's profile</td>
       <td>PUT</td>
-      <td>user id</td>
-      <td>JSON with updated info</td>
-      <td>JSON with updated user info</td>
+      <td>Username</td>
+      <td>{
+        "Username": "newname",
+        "Password": "newpass",
+        "Email": "new@example.com",
+        "Birthday": "1992-05-20"
+      }</td>
+      <td>Updated user object</td>
     </tr>
 
     <!-- Add to favorites -->
     <tr>
       <td>Add Favorite Movie</td>
-      <td>/users/:id/movies/:movieID</td>
+      <td>/users/:Username/movies/:MovieID</td>
       <td>Adds a movie to the user's favorite list</td>
       <td>POST</td>
-      <td>user id, movie ID</td>
+      <td>Username, MovieID</td>
       <td>None</td>
-      <td>Message confirming the movie was added</td>
+      <td>Updated user object with movie added to FavoriteMovies</td>
     </tr>
 
     <!-- Remove from favorites -->
     <tr>
       <td>Remove Favorite Movie</td>
-      <td>/users/:id/movies/:movieID</td>
+      <td>/users/:Username/movies/:MovieID</td>
       <td>Removes a movie from the favorite list</td>
       <td>DELETE</td>
-      <td>user id, movie ID</td>
+      <td>Username, MovieID</td>
       <td>None</td>
-      <td>Message confirming the movie was removed</td>
+      <td>Updated user object with movie removed from FavoriteMovies</td>
     </tr>
 
     <!-- Delete user -->
     <tr>
       <td>Delete User</td>
-      <td>/users/:id</td>
+      <td>/users/:Username</td>
       <td>Deletes a user account</td>
       <td>DELETE</td>
-      <td>user id</td>
+      <td>Username</td>
       <td>None</td>
       <td>Message confirming the user was deleted</td>
     </tr>
@@ -135,7 +145,10 @@
       <td>GET</td>
       <td>genre name</td>
       <td>None</td>
-      <td>Genre object</td>
+      <td> {
+        "Name": "Thriller",
+        "Description": "Thriller film, also known as suspense film..."
+      }</td>
     </tr>
 
     <!-- Get director info -->
@@ -146,7 +159,10 @@
       <td>GET</td>
       <td>director name</td>
       <td>None</td>
-      <td>Director object</td>
+      <td> {
+        "Name": "Alfred Hitchcock",
+        "Bio": "Alfred Hitchcock was an English filmmaker..."
+      }</td>
     </tr>
   </tbody>
 </table>
