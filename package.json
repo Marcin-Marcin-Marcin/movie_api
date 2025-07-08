@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Marcin-Marcin-Marcin/movie_api#readme",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "express": "^5.1.0",
     "mongoose": "^8.16.1",
