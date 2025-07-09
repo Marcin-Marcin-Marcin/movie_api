@@ -7,8 +7,6 @@ const { check, validationResult } = require('express-validator');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-//mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-//mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -43,107 +41,10 @@ require('./passport');
 app.use(morgan('common'));
 app.use(express.static('public'));
 
-let topMovies = [
-    {
-        title: 'Vertigo',
-        director: 'Alfred Hitchcock'
-    },
-    {
-        title: 'Dial M for Murder',
-        director: 'Alfred Hitchcock'
-    },
-    {
-        title: 'Rope',
-        director: 'Alfred Hitchcock'
-    },
-    {
-        title: 'La Ceremonie',
-        director: 'Claude Chabrol'
-    },
-    {
-        title: 'Merci pour le Chocolat',
-        director: 'Claude Chabrol'
-    },
-    {
-        title: 'Les Masques',
-        director: 'Claude Chabrol'
-    },
-    {
-        title: 'All About My Mother',
-        director: 'Pedro Almodovar'
-    },
-    {
-        title: 'The Skin I Live In',
-        director: 'Pedro Almodovar'
-    },
-    {
-        title: 'Matador',
-        director: 'Pedro Almodovar'
-    },
-    {
-        title: 'Faustrecht der Freiheit',
-        director: 'Rainer Werner Fassbinder'
-    }
-];
-
 app.get('/', (req, res) => {
   res.send('Welcome to my Top Movie List!');
 });
 
-// Get top movies - replaced by version compatible with mongoose
-/*app.get('/movies', (req, res) => {
-  res.json(topMovies);
-});*/
-
-// Get movie by genre  - replaced by version compatible with mongoose
-/*app.get('/movies/genre/:genreName', (req, res) => {
-  res.send(`Return description for genre: ${req.params.genreName}`);
-});*/
-
-// Get director info  - replaced by version compatible with mongoose
-/*app.get('/movies/director/:directorName', (req, res) => {
-  res.send(`Return info for director: ${req.params.directorName}`);
-});*/
-
-// Get movie by title  - replaced by version compatible with mongoose
-/*app.get('/movies/:title', (req, res) => {
-  res.send(`Return data for movie titled: ${req.params.title}`);
-});*/
-
-// Create new user - replaced by version compatible with mongoose
-/*app.post('/users', (req, res) => {
-  res.send('New user registered');
-});*/
-
-// Update user info - replaced by version compatible with mongoose
-/*app.put('/users/:id', (req, res) => {
-  res.send(`User with ID ${req.params.id} updated`);
-});*/
-
-// Add to favorites - replaced by version compatible with mongoose
-/*app.post('/users/:id/movies/:movieID', (req, res) => {
-  res.send(`Movie ${req.params.movieID} added to favorites for user ${req.params.id}`);
-});*/
-
-// Remove from favorites  - replaced by version compatible with mongoose
-/*app.delete('/users/:id/movies/:movieID', (req, res) => {
-  res.send(`Movie ${req.params.movieID} removed from favorites for user ${req.params.id}`);
-});*/
-
-// Delete user - replaced by version compatible with mongoose
-/*app.delete('/users/:id', (req, res) => {
-  res.send(`User with ID ${req.params.id} deleted`);
-});*/
-
-//Add a user
-/* We’ll expect JSON in this format
-{
-  ID: Integer,
-  Username: String,
-  Password: String,
-  Email: String,
-  Birthday: Date
-}*/
 app.post('/users', [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -159,7 +60,7 @@ app.post('/users', [
   await Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
+        return res.status(400).json({message: req.body.Username + 'already exists' });
       } else {
         Users
           .create({
@@ -171,13 +72,13 @@ app.post('/users', [
           .then((user) =>{res.status(201).json(user) })
         .catch((error) => {
           console.error(error);
-          res.status(500).send('Error: ' + error);
+          res.status(500).json({message: 'Error: ' + error });
         })
       }
     })
     .catch((error) => {
       console.error(error);
-      res.status(500).send('Error: ' + error);
+      res.status(500).json({message: 'Error: ' + error });
     });
 });
 
@@ -207,7 +108,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), as
   })
   .catch((err) => {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).json({message: 'Error: ' + err });
   })
 
 });
@@ -223,7 +124,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
   })
   .catch((err) => {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).json({message: 'Error: ' + err });
   });
 });
 
@@ -232,14 +133,14 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
   await Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
-        res.status(400).send(req.params.Username + ' was not found');
+        res.status(400).json({message: req.params.Username + ' was not found' });
       } else {
-        res.status(200).send(req.params.Username + ' was deleted.');
+        res.status(200).json({message: req.params.Username + ' was deleted.' });
       }
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error: ' + err);
+      res.status(500).json({message: 'Error: ' + err});
     });
 });
 
@@ -251,51 +152,51 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error: ' + err);
+      res.status(500).json({message: 'Error: ' + err });
     });
 }); 
 
 // Ger movie by title
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Movies.findOne({ Title: req.params.Title })
+  await Movies.find({ Title: req.params.Title })
     .then((movie) => {
       res.json(movie);
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error: ' + err);
+      res.status(500).json({message: 'Error: ' + err });
     });
 });
 
 //Get genre name
 app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Movies.findOne({ 'Genre.Name': req.params.genreName })
+  await Movies.find({ 'Genre.Name': req.params.genreName })
     .then((movie) => {
       if (movie) {
         res.json(movie.Genre);
       } else {
-        res.status(404).send('Genre not found');
+        res.status(404).json({message: 'Genre not found' });
       }
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error: ' + err);
+      res.status(500).json({message: 'Error: ' + err });
     });
 });
 
 // Get director name
 app.get('/movies/director/:directorName', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Movies.findOne({ 'Director.Name': req.params.directorName })
+  await Movies.find({ 'Director.Name': req.params.directorName })
     .then((movie) => {
       if (movie) {
         res.json(movie.Director);
       } else {
-        res.status(404).send('Director not found');
+        res.status(404).json({message:'Director not found'});
       }
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error: ' + err);
+      res.status(500).json({message:'Error: ' + err});
     });
 });
 
@@ -311,13 +212,13 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
   })
   .catch((err) => {
     console.error(err);
-    res.status(500).send('Error: ' + err);
+    res.status(500).json({message: 'Error: ' + err });
   });
 });
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).json({message: 'Something broke!' });
 });
 
 const port = process.env.PORT || 8080;
